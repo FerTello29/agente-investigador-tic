@@ -4,6 +4,8 @@ Agente investigador que recibe una pregunta sobre Tecnologías de la Informació
 
 > Práctica 2.2 · Agente investigador — FastAPI · OpenAI Responses API · Web Search · Git/GitHub · Vercel
 
+**Demo en producción:** https://agente-investigador-tic-swart.vercel.app
+
 ## Funcionalidades
 
 - **Tres modos de investigación:** ⚡ rápido, ⚖️ comparativo y 🔬 profundo.
