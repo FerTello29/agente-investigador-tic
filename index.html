@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radar TIC · Agente investigador</title>
+  <meta name="description" content="Radar TIC: agente investigador de tecnología con OpenAI Responses API y Web Search.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23061019' stroke='%2322e3b5' stroke-width='2'/><circle cx='16' cy='16' r='8' fill='none' stroke='%2322e3b5' stroke-opacity='.5'/><path d='M16 16 L28 10' stroke='%2322e3b5' stroke-width='2.5' stroke-linecap='round'/><circle cx='21' cy='11' r='2' fill='%2322e3b5'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#" data-view="investigar">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17"/><circle cx="20" cy="20" r="11"/><circle cx="20" cy="20" r="5"/><line x1="20" y1="20" x2="34" y2="11"/></svg>
+      </span>
+      <span>
+        <strong>Radar TIC</strong>
+        <small>Agente investigador de tecnología</small>
+      </span>
+    </a>
+    <nav class="tabs" aria-label="Secciones">
+      <button class="tab active" data-view="investigar">Nueva investigación</button>
+      <button class="tab" data-view="historial">Historial <span class="badge" id="historial-count">0</span></button>
+      <button class="tab" data-view="acerca">Acerca de</button>
+    </nav>
+    <div class="topbar-right">
+      <span class="status" id="status"><i></i><span>Conectando…</span></span>
+      <button class="icon-btn" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ VISTA: INVESTIGAR ============ -->
+    <section class="view active" id="view-investigar">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="pulse"></span> OpenAI Responses API · Web Search</p>
+          <h1>Detecta las señales de la <span class="grad">tecnología</span> antes que nadie.</h1>
+          <p class="lead">Radar TIC planifica, busca en Internet, contrasta fuentes y entrega un reporte estructurado con evidencia verificable.</p>
+          <ul class="hero-stats">
+            <li><strong>3</strong><span>modos de investigación</span></li>
+            <li><strong>7</strong><span>secciones por reporte</span></li>
+            <li><strong>0</strong><span>claves expuestas al navegador</span></li>
+          </ul>
+        </div>
+        <div class="radar" id="radar" aria-hidden="true">
+          <div class="radar-ring r1"></div><div class="radar-ring r2"></div><div class="radar-ring r3"></div>
+          <div class="radar-cross"></div>
+          <div class="radar-sweep"></div>
+          <span class="blip" style="--x:68%;--y:30%;--d:0s">IA</span>
+          <span class="blip" style="--x:28%;--y:38%;--d:1.1s">IoT</span>
+          <span class="blip" style="--x:60%;--y:72%;--d:2.2s">5G</span>
+          <span class="blip" style="--x:34%;--y:68%;--d:3.1s">Cloud</span>
+          <span class="blip" style="--x:80%;--y:55%;--d:1.7s">Ciber</span>
+          <div class="radar-core"></div>
+        </div>
+      </div>
+
+      <form class="card card-question" id="form-investigacion" novalidate>
+        <div class="card-head">
+          <span class="card-icon">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </span>
+          <h2>Pregunta de investigación</h2>
+          <span class="hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> para investigar</span>
+        </div>
+
+        <label class="sr-only" for="pregunta">Pregunta</label>
+        <div class="question-box">
+          <textarea id="pregunta" name="pregunta" rows="2" maxlength="600" required
+            placeholder="¿Cuáles son las tendencias de agentes de inteligencia artificial durante 2026?"></textarea>
+          <span class="counter" id="contador">0/600</span>
+        </div>
+
+        <div class="suggestions" id="sugerencias" aria-label="Preguntas sugeridas"></div>
+
+        <div class="controls">
+          <fieldset class="modes" id="modos">
+            <legend>Modo de investigación</legend>
+            <label class="mode">
+              <input type="radio" name="modo" value="rapido" checked>
+              <span><b>⚡ Rápido</b><small>Respuesta directa, 3+ fuentes</small></span>
+            </label>
+            <label class="mode">
+              <input type="radio" name="modo" value="comparativo">
+              <span><b>⚖️ Comparativo</b><small>Contrasta posturas, 5+ fuentes</small></span>
+            </label>
+            <label class="mode">
+              <input type="radio" name="modo" value="profundo">
+              <span><b>🔬 Profundo</b><small>Análisis exhaustivo, 6+ fuentes</small></span>
+            </label>
+          </fieldset>
+
+          <div class="actions">
+            <label class="switch" title="Desactívalo para el Experimento A (sin Internet)">
+              <input type="checkbox" id="web-search" checked>
+              <span class="track"><span class="thumb"></span></span>
+              <span class="switch-label">Web Search <em id="ws-estado">activado</em></span>
+            </label>
+            <button class="btn-primary" type="submit" id="btn-investigar">
+              <span class="btn-label">Investigar</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="grid-2">
+        <section class="card card-activity">
+          <div class="card-head">
+            <span class="card-icon"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4M9 13h.01M15 13h.01"/></svg></span>
+            <h2>Actividad del agente</h2>
+            <span class="timer" id="timer">00.0 s</span>
+          </div>
+          <ol class="timeline" id="actividad"></ol>
+          <div class="queries" id="busquedas" hidden>
+            <h3>Búsquedas realizadas</h3>
+            <div class="chips" id="busquedas-lista"></div>
+          </div>
+        </section>
+
+        <section class="card card-plan">
+          <div class="card-head">
+            <span class="card-icon"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg></span>
+            <h2>Plan de investigación</h2>
+            <span class="tag" id="plan-tag">Propuesto</span>
+          </div>
+          <ol class="plan" id="plan"></ol>
+        </section>
+      </div>
+
+      <section class="card card-report" id="reporte" aria-live="polite">
+        <div class="card-head">
+          <span class="card-icon"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span>
+          <h2>Reporte de investigación</h2>
+          <div class="report-tools" id="report-tools" hidden>
+            <button class="ghost" id="btn-copiar" type="button">Copiar</button>
+            <button class="ghost" id="btn-descargar" type="button">Descargar .md</button>
+          </div>
+        </div>
+        <div id="reporte-contenido">
+          <div class="empty">
+            <div class="empty-radar"></div>
+            <p><strong>El radar está listo.</strong><br>Escribe una pregunta y elige un modo para iniciar la investigación.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card card-sources" id="fuentes-card" hidden>
+        <div class="card-head">
+          <span class="card-icon"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span>
+          <h2>Fuentes consultadas</h2>
+          <span class="tag" id="fuentes-tag"></span>
+        </div>
+        <ol class="sources" id="fuentes"></ol>
+      </section>
+    </section>
+
+    <!-- ============ VISTA: HISTORIAL ============ -->
+    <section class="view" id="view-historial">
+      <div class="view-head">
+        <h1>Historial</h1>
+        <p class="lead">Tus investigaciones se guardan solo en este navegador. Úsalas para comparar el Experimento A (sin Web Search) con el B (con Web Search).</p>
+        <button class="ghost" id="btn-limpiar" type="button">Borrar historial</button>
+      </div>
+      <div class="history" id="historial"></div>
+    </section>
+
+    <!-- ============ VISTA: ACERCA DE ============ -->
+    <section class="view" id="view-acerca">
+      <div class="view-head">
+        <h1>¿Cómo funciona Radar TIC?</h1>
+        <p class="lead">Un agente persigue un objetivo y decide usar herramientas. Aquí el objetivo es investigar; la herramienta es <b>Web Search</b>.</p>
+      </div>
+
+      <div class="flow">
+        <div class="node"><b>Navegador</b><small>index.html · assets/</small></div>
+        <div class="edge">POST /api/investigar</div>
+        <div class="node accent"><b>FastAPI</b><small>app/main.py</small></div>
+        <div class="edge">InvestigacionRequest</div>
+        <div class="node"><b>InvestigadorService</b><small>app/services</small></div>
+        <div class="edge">Responses API + web_search</div>
+        <div class="node accent"><b>OpenAI</b><small>Internet</small></div>
+      </div>
+
+      <div class="arch">
+        <article><h3>index.html + assets/css</h3><p>Estructura semántica y presentación visual separadas.</p></article>
+        <article><h3>assets/js</h3><p><code>config.js</code> decide el endpoint, <code>api.js</code> encapsula HTTP y <code>app.js</code> controla eventos y estados.</p></article>
+        <article><h3>app/main.py</h3><p>Coordina la capa web: frontend, estáticos, CORS y endpoints. No contiene la lógica del agente.</p></article>
+        <article><h3>app/core/config.py</h3><p>Lee <code>OPENAI_API_KEY</code> y el modelo desde variables de entorno, solo en el servidor.</p></article>
+        <article><h3>app/models/investigacion.py</h3><p>Valida la pregunta, el modo y la forma exacta del reporte con Pydantic.</p></article>
+        <article><h3>app/services/investigador_service.py</h3><p>Construye instrucciones, llama a Responses API con Web Search y procesa reporte, citas y fuentes.</p></article>
+      </div>
+
+      <div class="security">
+        <svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8.6 8 9.9 4.6-1.3 8-4.9 8-9.9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+        <div>
+          <h3>La API Key nunca llega al navegador</h3>
+          <p>En local vive en <code>.env</code> (ignorado por Git); en Vercel, como variable de entorno del proyecto. El frontend solo conoce <code>/api/investigar</code>; <code>/api/health</code> informa si la clave existe, nunca su valor.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Radar TIC · Práctica 2.2 Agente investigador</span>
+    <span>FastAPI · OpenAI Responses API · Web Search · Vercel</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
